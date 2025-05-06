@@ -6,6 +6,7 @@ volumes:                                                       # 定义持久化
   databasedata:                                                # MySQL数据存储卷，用于持久化数据库数据
   databaseconf:                                                # MySQL配置存储卷，用于持久化数据库配置
   etcddata:                                                    # 添加etcd数据卷
+  natsdata:                                                     # 添加 NATS 数据卷
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -55,3 +56,22 @@ services:                                                      # 定义服务列
     environment:
       - ETCD_INITIAL_CLUSTER_STATE=new                        # 初始集群状态
       - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster-1            # 集群token
+
+  codenats:                                                     # NATS 服务配置
+    build:
+      context: .
+      dockerfile: compose/nats/Dockerfile
+    image: kratos_nats
+    container_name: kratos_nats
+    restart: always
+    volumes:
+      - natsdata:/data                                         # 数据持久化
+      - ./compose/nats/nats-server.conf:/etc/nats/nats-server.conf:ro  # 配置文件挂载
+    ports:
+      - "4222:4222"                                            # 客户端连接端口
+      - "8222:8222"                                            # HTTP 管理端口
+      - "6222:6222"                                            # 集群通信端口
+    ulimits:                                                   # 系统资源限制
+      nofile:
+        soft: 65536
+        hard: 65536
