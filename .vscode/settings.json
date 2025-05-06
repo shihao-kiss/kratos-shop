@@ -1,0 +1,40 @@
+{
+    "go.useLanguageServer": true,
+    "go.goroot": "D:\\software\\go1.24",
+    "go.gopath": "D:\\project\\go\\go_base",
+    "go.toolsEnvVars": {
+        "GOPROXY": "https://goproxy.cn,direct",
+        "GOPRIVATE": "gitlab2.aishu.cn",
+        "GOSUMDB": "off"
+    },
+    "go.alternateTools": {
+        "gopls": "D:\\project\\go\\go_base\\bingopls.exe"
+    },
+    "gopls": {
+        "verboseOutput": true,
+        "ui.semanticTokens": true,
+        "ui.completion.usePlaceholders": true,
+        "formatting.gofumpt": true,
+        "build.env": {
+            "GOPRIVATE": "gitlab2.aishu.cn"
+        }
+    },
+    "[go]": {
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+            "source.organizeImports": "explicit"
+        }
+    },
+    "window.commandCenter": true,
+    "git.ignoreWindowsGit27Warning": true,
+    "files.autoSave": "afterDelay",
+    "editor.fontSize": 20,
+    "editor.tabSize": 4,
+    "go.toolsGopath": "",
+    "go.formatTool": "goimports",
+    "git.path": "D:\\software\\Git\\cmd\\git.exe",
+    "workbench.settings.applyToAllProfils": [
+        "workbench.sideBar.location"
+    ],
+    "git.autofetch": true
+}
