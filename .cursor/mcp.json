@@ -30,7 +30,7 @@
           "--transport",
           "stdio",
           "--dsn",
-          "mysql://root:00000000@192.168.0.106:3306/BackupServiceDB"
+          "mysql://root:Eisoo.com123@192.168.0.106:3306/BackupServiceDB"
         ]
       }
     }

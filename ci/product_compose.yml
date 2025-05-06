@@ -5,6 +5,7 @@ version: '3'                                                   # 指定使用doc
 volumes:                                                       # 定义持久化存储卷
   databasedata:                                                # MySQL数据存储卷，用于持久化数据库数据
   databaseconf:                                                # MySQL配置存储卷，用于持久化数据库配置
+  etcddata:                                                    # 添加etcd数据卷
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -38,3 +39,19 @@ services:                                                      # 定义服务列
     restart: always                                            # 容器总是自动重启
     # 暴露全端口
     network_mode: host                                         # 使用主机网络模式，直接使用宿主机的网络
+
+  codeetcd:                                                    # etcd服务配置
+    build:
+      context: .
+      dockerfile: compose/etcd/Dockerfile
+    image: kratos_etcd
+    container_name: kratos_etcd
+    restart: always
+    volumes:
+      - etcddata:/bitnami/etcd                                # 数据持久化
+    ports:
+      - "2379:2379"                                           # 客户端通信端口
+      - "2380:2380"                                           # 集群通信端口
+    environment:
+      - ETCD_INITIAL_CLUSTER_STATE=new                        # 初始集群状态
+      - ETCD_INITIAL_CLUSTER_TOKEN=etcd-cluster-1            # 集群token
