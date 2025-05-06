@@ -31,14 +31,17 @@ ADD ./compose/nginx/404.html /usr/local/nginx/html
 ADD ./compose/nginx/https.key /usr/local/nginx
 ADD ./compose/nginx/https.pem /usr/local/nginx
 
-COPY ./compose/nginx/entrypoint.sh /usr/local/bin/
-RUN chmod +x /usr/local/bin/entrypoint.sh
+# 设置启动脚本
+RUN mkdir -p /usr/local/bin
+COPY ./compose/nginx/entrypoint.sh /usr/local/bin/entrypoint.sh
+RUN chmod 755 /usr/local/bin/entrypoint.sh && \
+    sed -i 's/\r$//' /usr/local/bin/entrypoint.sh
 
 # 设置为上海时区
 RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 RUN echo "Asia/shanghai" >> /etc/timezone
 
-ENTRYPOINT ["/usr/local/bin/entrypoint.sh"]
+ENTRYPOINT ["sh", "/usr/local/bin/entrypoint.sh"]
 
 WORKDIR /
 CMD ["/bin/bash"]
