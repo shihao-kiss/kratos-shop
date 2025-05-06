@@ -2,8 +2,15 @@ FROM centos:7
 
 MAINTAINER li_ning_@outlook.com
 
+# 更换为阿里云镜像源
+RUN cd /etc/yum.repos.d/ \
+    && sed -i 's/mirrorlist/#mirrorlist/g' /etc/yum.repos.d/CentOS-* \
+    && sed -i 's|#baseurl=http://mirror.centos.org|baseurl=http://mirrors.aliyun.com|g' /etc/yum.repos.d/CentOS-* \
+    && yum clean all \
+    && yum makecache
+
 RUN yum install -y make zlib zlib-devel pcre pcre-devel gcc gcc-c++ openssl openssl-devel libevent libevent-devel perl unzip net-tools wget initscripts \
-    && yum clean  all && rm -rf /var/cache/yum/*
+    && yum clean all && rm -rf /var/cache/yum/*
 
 # 复制工具包
 ADD ./compose/nginx/nginx-1.12.1.tar.gz /usr/local/src
