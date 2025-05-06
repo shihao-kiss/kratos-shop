@@ -1,0 +1,7 @@
+
+# 示例内容
+node_modules/
+.env
+*.log
+.DS_Store
+

@@ -1,0 +1,37 @@
+{
+    "mcpServers": {
+      "filesystem": {
+        "command": "cmd",
+        "args": [
+          "/c",
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-filesystem",
+          "C:\\Users\\shihao\\Desktop"
+        ]
+      },
+      "redis": {
+        "command": "cmd",
+        "args": [
+          "/c",
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-redis",
+          "redis://192.168.0.106:6379"
+        ]
+      },
+      "dbhub-mysql-npx": {
+        "command": "cmd",
+        "args": [
+          "/c",
+          "npx",
+          "-y",
+          "@bytebase/dbhub",
+          "--transport",
+          "stdio",
+          "--dsn",
+          "mysql://root:00000000@192.168.0.106:3306/BackupServiceDB"
+        ]
+      }
+    }
+  }
