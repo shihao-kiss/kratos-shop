@@ -5,7 +5,7 @@
   "node_name": "consul_server",
   "server": true,
   "bootstrap_expect": 1,
-  "client_addr": "0.0.0.0",
+  "client_addr": "192.168.0.106",
   "ui_config": {
     "enabled": true
   },
