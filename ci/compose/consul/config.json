@@ -1,0 +1,20 @@
+{
+  "datacenter": "kratos",
+  "data_dir": "/consul/data",
+  "log_level": "INFO",
+  "node_name": "consul_server",
+  "server": true,
+  "bootstrap_expect": 1,
+  "client_addr": "0.0.0.0",
+  "ui_config": {
+    "enabled": true
+  },
+  "ports": {
+    "dns": 8600,
+    "http": 8500,
+    "https": -1,
+    "serf_lan": 8301,
+    "serf_wan": 8302,
+    "server": 8300
+  }
+} 

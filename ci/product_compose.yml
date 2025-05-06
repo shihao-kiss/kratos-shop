@@ -7,6 +7,7 @@ volumes:                                                       # 定义持久化
   databaseconf:                                                # MySQL配置存储卷，用于持久化数据库配置
   etcddata:                                                    # 添加etcd数据卷
   natsdata:                                                     # 添加 NATS 数据卷
+  consuldata:                                                   # 添加 Consul 数据卷
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -75,3 +76,26 @@ services:                                                      # 定义服务列
       nofile:
         soft: 65536
         hard: 65536
+
+  codeconsul:                                                   # Consul 服务配置
+    build:
+      context: .
+      dockerfile: compose/consul/Dockerfile
+    image: kratos_consul
+    container_name: kratos_consul
+    restart: always
+    volumes:
+      - consuldata:/consul/data                                # 数据持久化
+      - ./compose/consul/config.json:/consul/config/config.json:ro  # 配置文件挂载
+    ports:
+      - "8500:8500"                                           # HTTP API & UI
+      - "8600:8600/tcp"                                       # DNS
+      - "8600:8600/udp"                                       # DNS
+      - "8300:8300"                                           # Server RPC
+      - "8301:8301"                                           # Serf LAN
+      - "8302:8302"                                           # Serf WAN
+    environment:
+      - CONSUL_ALLOW_PRIVILEGED_PORTS=true                    # 允许绑定特权端口
+    cap_add:
+      - NET_ADMIN                                             # 允许网络管理权限
+      - SYS_TIME                                              # 允许时间同步
