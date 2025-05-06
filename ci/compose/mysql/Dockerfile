@@ -1,6 +1,6 @@
 FROM mysql:5.7
 
-RUN rm /etc/mysql/my.cnf
+RUN rm -f /etc/mysql/my.cnf
 COPY ./compose/mysql/mysql.cnf /etc/mysql/my.cnf
 
 # 拷贝数据库初始化sql脚本
