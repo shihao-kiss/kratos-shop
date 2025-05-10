@@ -1,7 +1,7 @@
 package server
 
 import (
-	v1 "todolist/api/helloworld/v1"
+	todolistV1 "todolist/api/todolist/v1"
 	"todolist/internal/conf"
 	"todolist/internal/service"
 
@@ -11,8 +11,8 @@ import (
 )
 
 // NewGRPCServer new a gRPC server.
-func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *grpc.Server {
-	var opts = []grpc.ServerOption{
+func NewGRPCServer(c *conf.Server, todoService *service.TodoService, logger log.Logger) *grpc.Server {
+	opts := []grpc.ServerOption{
 		grpc.Middleware(
 			recovery.Recovery(),
 		),
@@ -27,6 +27,6 @@ func NewGRPCServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, grpc.Timeout(c.Grpc.Timeout.AsDuration()))
 	}
 	srv := grpc.NewServer(opts...)
-	v1.RegisterGreeterServer(srv, greeter)
+	todolistV1.RegisterTodoServer(srv, todoService)
 	return srv
 }

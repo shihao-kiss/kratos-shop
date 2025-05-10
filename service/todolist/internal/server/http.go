@@ -1,7 +1,7 @@
 package server
 
 import (
-	v1 "todolist/api/helloworld/v1"
+	todolistV1 "todolist/api/todolist/v1"
 	"todolist/internal/conf"
 	"todolist/internal/service"
 
@@ -11,8 +11,8 @@ import (
 )
 
 // NewHTTPServer new an HTTP server.
-func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.Logger) *http.Server {
-	var opts = []http.ServerOption{
+func NewHTTPServer(c *conf.Server, todoService *service.TodoService, logger log.Logger) *http.Server {
+	opts := []http.ServerOption{
 		http.Middleware(
 			recovery.Recovery(),
 		),
@@ -27,6 +27,6 @@ func NewHTTPServer(c *conf.Server, greeter *service.GreeterService, logger log.L
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
 	srv := http.NewServer(opts...)
-	v1.RegisterGreeterHTTPServer(srv, greeter)
+	todolistV1.RegisterTodoHTTPServer(srv, todoService)
 	return srv
 }

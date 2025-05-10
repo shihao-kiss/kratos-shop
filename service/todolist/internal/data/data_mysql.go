@@ -8,17 +8,17 @@ import (
 )
 
 // ProviderSet is data providers.
-var ProviderSet = wire.NewSet(NewData, NewGreeterRepo, NewMysqlData,NewTodoListRepo)
+var MysqlProviderSet = wire.NewSet(NewData, NewGreeterRepo)
 
 // Data .
-type Data struct {
+type MysqlData struct {
 	// TODO wrapped database client
 }
 
 // NewData .
-func NewData(c *conf.Data, logger log.Logger) (*Data, func(), error) {
+func NewMysqlData(c *conf.Data, logger log.Logger) (*MysqlData, func(), error) {
 	cleanup := func() {
 		log.NewHelper(logger).Info("closing the data resources")
 	}
-	return &Data{}, cleanup, nil
+	return &MysqlData{}, cleanup, nil
 }

@@ -7,13 +7,13 @@
 package main
 
 import (
+	"github.com/go-kratos/kratos/v2"
+	"github.com/go-kratos/kratos/v2/log"
 	"todolist/internal/biz"
 	"todolist/internal/conf"
 	"todolist/internal/data"
 	"todolist/internal/server"
 	"todolist/internal/service"
-	"github.com/go-kratos/kratos/v2"
-	"github.com/go-kratos/kratos/v2/log"
 )
 
 import (
@@ -24,15 +24,15 @@ import (
 
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	dataData, cleanup, err := data.NewData(confData, logger)
+	mysqlData, cleanup, err := data.NewMysqlData(confData, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	greeterRepo := data.NewGreeterRepo(dataData, logger)
-	greeterUsecase := biz.NewGreeterUsecase(greeterRepo, logger)
-	greeterService := service.NewGreeterService(greeterUsecase)
-	grpcServer := server.NewGRPCServer(confServer, greeterService, logger)
-	httpServer := server.NewHTTPServer(confServer, greeterService, logger)
+	todoListRepo := data.NewTodoListRepo(mysqlData, logger)
+	todoListUsecase := biz.NewTodoListUsecase(todoListRepo, logger)
+	todoService := service.NewTodoService(todoListUsecase)
+	grpcServer := server.NewGRPCServer(confServer, todoService, logger)
+	httpServer := server.NewHTTPServer(confServer, todoService, logger)
 	app := newApp(logger, grpcServer, httpServer)
 	return app, func() {
 		cleanup()
