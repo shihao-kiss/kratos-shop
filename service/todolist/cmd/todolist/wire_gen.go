@@ -24,11 +24,12 @@ import (
 
 // wireApp init kratos application.
 func wireApp(confServer *conf.Server, confData *conf.Data, logger log.Logger) (*kratos.App, func(), error) {
-	mysqlData, cleanup, err := data.NewMysqlData(confData, logger)
+	db := data.NewDB(confData)
+	dataData, cleanup, err := data.NewData(db, logger)
 	if err != nil {
 		return nil, nil, err
 	}
-	todoListRepo := data.NewTodoListRepo(mysqlData, logger)
+	todoListRepo := data.NewTodoListRepo(dataData, logger)
 	todoListUsecase := biz.NewTodoListUsecase(todoListRepo, logger)
 	todoService := service.NewTodoService(todoListUsecase)
 	grpcServer := server.NewGRPCServer(confServer, todoService, logger)
