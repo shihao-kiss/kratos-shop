@@ -7,7 +7,7 @@
           "npx",
           "-y",
           "@modelcontextprotocol/server-filesystem",
-          "C:\\Users\\shihao\\Desktop"
+          "D:\\project\\github.com\\shihao-kiss\\kratos-shop\\service\\todolistweb"
         ]
       },
       "redis": {

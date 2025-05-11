@@ -23,14 +23,14 @@ func (s *TodoService) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest)
 	if req.Title == "" {
 		return nil, errors.New("title is required")
 	}
-    // 业务逻辑 
+	// 业务逻辑
 	resp, err := s.uc.CreateTodoList(ctx, &biz.TodoList{
 		Title: req.Title,
 	})
 	if err != nil {
 		return nil, err
 	}
-    // 返回值 
+	// 返回值
 	return &pb.CreateTodoReply{
 		Todo: &pb.TodoBody{
 			Id:        resp.ID,
@@ -42,13 +42,13 @@ func (s *TodoService) CreateTodo(ctx context.Context, req *pb.CreateTodoRequest)
 
 func (s *TodoService) UpdateTodo(ctx context.Context, req *pb.UpdateTodoRequest) (*pb.UpdateTodoReply, error) {
 	// 参数校验
-	if req.Id == 0 || req.Title == "" {
+	if req.Id == 0 {
 		return nil, errors.New("id and title and completed are required")
 	}
 	// 业务逻辑
 	_, err := s.uc.UpdateTodoList(ctx, &biz.TodoList{
-		ID: req.Id,
-		Title: req.Title,
+		ID:        req.Id,
+		Title:     req.Title,
 		Completed: req.Completed,
 	})
 	if err != nil {
@@ -78,7 +78,7 @@ func (s *TodoService) GetTodo(ctx context.Context, req *pb.GetTodoRequest) (*pb.
 		return nil, errors.New("id is required")
 	}
 	// 业务逻辑
-	resp, err := s.uc.FindByID(ctx, req.Id)	
+	resp, err := s.uc.FindByID(ctx, req.Id)
 	if err != nil {
 		return nil, err
 	}

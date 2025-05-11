@@ -26,6 +26,10 @@ func NewHTTPServer(c *conf.Server, todoService *service.TodoService, logger log.
 	if c.Http.Timeout != nil {
 		opts = append(opts, http.Timeout(c.Http.Timeout.AsDuration()))
 	}
+
+	opts = append(opts, http.ResponseEncoder(responseEncoder))
+	opts = append(opts, http.ErrorEncoder(responseErrorEncoder))
+
 	srv := http.NewServer(opts...)
 	todolistV1.RegisterTodoHTTPServer(srv, todoService)
 	return srv
