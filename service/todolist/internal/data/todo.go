@@ -32,7 +32,7 @@ func (r *todoListRepo) Save(ctx context.Context, g *biz.TodoList) (*biz.TodoList
 
 func (r *todoListRepo) Update(ctx context.Context, g *biz.TodoList) (*biz.TodoList, error) {
 	r.log.Infof("Update: %+v", g)
-	err := r.data.db.Model(&biz.TodoList{}).Where("id = ?", g.ID).Updates(g).Error
+	err := r.data.db.Model(&biz.TodoList{}).Where("id = ?", g.ID).Update("title", g.Title).Update("completed", g.Completed).Error
 	if err != nil {
 		return nil, err
 	}
