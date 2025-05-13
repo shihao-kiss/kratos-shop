@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/centos
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/centos:7
 
 MAINTAINER li_ning_@outlook.com
 
