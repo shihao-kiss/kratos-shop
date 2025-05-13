@@ -1,4 +1,4 @@
-FROM centos:7
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/centos
 
 MAINTAINER li_ning_@outlook.com
 

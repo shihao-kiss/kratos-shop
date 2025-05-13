@@ -1,4 +1,4 @@
-FROM nats:2.10-alpine
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/nats
 
 # 安装 curl 用于健康检查
 RUN apk add --no-cache curl

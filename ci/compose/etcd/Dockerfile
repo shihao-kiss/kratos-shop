@@ -1,4 +1,4 @@
-FROM bitnami/etcd:3.5.9
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/etcd:3.5.9
 
 ENV ALLOW_NONE_AUTHENTICATION="yes"
 ENV ETCD_ADVERTISE_CLIENT_URLS="http://192.168.0.106:2379"

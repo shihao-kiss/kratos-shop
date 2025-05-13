@@ -1,4 +1,4 @@
-FROM consul:1.15
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/consul:1.15
 
 # 创建配置目录
 RUN mkdir -p /consul/config

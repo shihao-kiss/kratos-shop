@@ -1,4 +1,4 @@
-FROM mysql:5.7
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/mysql:5.7
 
 RUN rm -f /etc/mysql/my.cnf
 COPY ./compose/mysql/mysql.cnf /etc/mysql/my.cnf
