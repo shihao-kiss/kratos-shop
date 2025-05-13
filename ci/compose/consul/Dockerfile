@@ -5,6 +5,8 @@ RUN mkdir -p /consul/config
 
 # 复制配置文件
 COPY ./compose/consul/config.json /consul/config/config.json
+# 修正权限
+RUN chmod 755 /consul/config && chmod 644 /consul/config/config.json
 
 # 健康检查脚本
 COPY ./compose/consul/healthcheck.sh /usr/local/bin/
