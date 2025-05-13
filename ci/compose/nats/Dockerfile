@@ -5,7 +5,7 @@ RUN apk add --no-cache curl
 
 # 配置文件
 COPY ./compose/nats/nats-server.conf /etc/nats/nats-server.conf
-
+RUN chmod 644 /etc/nats/nats-server.conf && chown nats:nats /etc/nats/nats-server.conf
 
 # 健康检查脚本
 COPY ./compose/nats/healthcheck.sh /usr/local/bin/
