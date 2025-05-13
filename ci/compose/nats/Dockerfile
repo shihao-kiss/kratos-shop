@@ -23,4 +23,3 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD healthcheck.sh
 # 启动命令
 CMD ["nats-server", "--config", "/etc/nats/nats-server.conf"] 
 
-USER
