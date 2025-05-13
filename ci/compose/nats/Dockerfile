@@ -20,9 +20,6 @@ EXPOSE 4222 8222 6222
 # 健康检查
 HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD healthcheck.sh
 
-# 检查当前用户和 /etc/nats 目录权限（调试用，可后续删除）
-RUN whoami && ls -ld /etc/nats && ls -l /etc/nats
-
 # 启动命令
-CMD ["sh", "-c", "whoami && ls -l /etc/nats/nats-server.conf && ls -l /etc/nats/ && nats-server --config /etc/nats/nats-server.conf"]
+CMD ["nats-server", "--config", "/etc/nats/nats-server.conf"]
 
