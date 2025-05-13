@@ -24,5 +24,5 @@ HEALTHCHECK --interval=30s --timeout=10s --retries=3 CMD healthcheck.sh
 RUN whoami && ls -ld /etc/nats && ls -l /etc/nats
 
 # 启动命令
-CMD ["nats-server", "--config", "/etc/nats/nats-server.conf"] 
+CMD ["sh", "-c", "whoami && nats-server --config /etc/nats/nats-server.conf"]
 
