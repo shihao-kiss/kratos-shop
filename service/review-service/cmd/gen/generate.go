@@ -3,6 +3,11 @@ package main
 // gorm gen configure
 
 import (
+	"context"
+	"fmt"
+
+	"review-service/dal/model"
+	"review-service/dal/query"
 	"review-service/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/config"
@@ -16,7 +21,7 @@ import (
 func configData() *conf.Data {
 	flagconf := "../../configs/config.yaml"
 
-    c := config.New(
+	c := config.New(
 		config.WithSource(
 			file.NewSource(flagconf),
 		),
@@ -36,6 +41,7 @@ func configData() *conf.Data {
 
 // NewDB 创建数据库连接
 func NewDB(c *conf.Data) *gorm.DB {
+	fmt.Printf("c.Database.Driver: %+v\n", c.Database.Driver)
 	switch c.Database.Driver {
 	case "mysql":
 		dsn := c.Database.Source
@@ -49,11 +55,7 @@ func NewDB(c *conf.Data) *gorm.DB {
 	}
 }
 
-func main() {
-	// 获取配置
-	conf := configData()
-	// 创建数据库连接
-	db := NewDB(conf)
+func autoSync(db *gorm.DB) {
 	// 指定生成代码的具体相对目录(相对当前文件)，默认为：./query
 	// 默认生成需要使用WithContext之后才可以查询的代码，但可以通过设置gen.WithoutContext禁用该模式
 	g := gen.NewGenerator(gen.Config{
@@ -77,6 +79,37 @@ func main() {
 	// 也可以手动指定需要生成代码的数据表
 	g.ApplyBasic(g.GenerateAllTable()...)
 
+	// 通过ApplyInterface添加为表添加自定义方法
+	g.ApplyInterface(func(model.Querier) {}, g.GenerateModel("review_reply_info"))
+	g.GenerateModel("review_reply_info", gen.WithMethod(model.CommonModel{}))
+
 	// 执行并生成代码
 	g.Execute()
+}
+
+func operateDB(db *gorm.DB) {
+	query.SetDefault(db)
+
+	operateReviewReplyInfo := query.ReviewReplyInfo
+	ret, err := operateReviewReplyInfo.WithContext(context.Background()).Where(operateReviewReplyInfo.ID.Eq(1)).First()
+	if err != nil {
+		fmt.Printf("err: %+v\n", err)
+	}
+	fmt.Printf("reviewReplyInfo: %+v\n", ret.ExtJSONMap())
+
+	// 通过自定义方法查询
+	// ret2, err := operateReviewReplyInfo.WithContext(context.Background()).GetByVersion(0)
+	// if err != nil {
+	// 	fmt.Printf("err: %+v\n", err)
+	// }
+	// for _, v := range ret2 {
+	// 	fmt.Printf("v.ID: %+v, version: %+v\n", v.ID, v.Version)
+	// }
+}
+
+func main() {
+	conf := configData()
+	db := NewDB(conf)
+	autoSync(db)
+	operateDB(db)
 }
