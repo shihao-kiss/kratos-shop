@@ -1,10 +1,8 @@
-FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/zookeeper:latest
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/zookeeper:3.8
+# 如有需要可COPY自定义脚本或配置
 
 # 设置工作目录
 WORKDIR /opt/zookeeper
-
-# 复制配置文件
-COPY compose/kafka/zookeeper/zoo.cfg /conf/zoo.cfg
 
 # 暴露端口
 EXPOSE 2181
