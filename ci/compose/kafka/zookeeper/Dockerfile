@@ -10,4 +10,4 @@ COPY compose/kafka/zookeeper/zoo.cfg /conf/zoo.cfg
 EXPOSE 2181
 
 # 启动命令
-CMD ["zkServer.sh", "start-foreground"] 
+CMD ["/opt/zookeeper-3.4.13/bin/zkServer.sh", "start-foreground"] 
