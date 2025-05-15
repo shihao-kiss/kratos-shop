@@ -111,7 +111,7 @@ services:                                                      # 定义服务列
     restart: always
     volumes:
       - kafkadata:/var/lib/kafka/data                         # Kafka数据持久化
-      - ./compose/kafka/server.properties:/opt/kafka/config/server.properties:ro  # 配置文件挂载
+      - ./compose/kafka/server.properties:/opt/kafka/config/server.properties  # 配置文件挂载
     ports:
       - "9092:9092"                                           # Kafka客户端连接端口
     environment:
