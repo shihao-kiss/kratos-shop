@@ -4,7 +4,7 @@ FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/zookeeper:latest
 WORKDIR /opt/zookeeper
 
 # 复制配置文件
-COPY ./zoo.cfg /conf/zoo.cfg
+COPY compose/kafka/zookeeper/zoo.cfg /conf/zoo.cfg
 
 # 暴露端口
 EXPOSE 2181
