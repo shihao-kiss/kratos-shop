@@ -110,8 +110,8 @@ services:                                                      # 定义服务列
     container_name: kratos_kafka
     restart: always
     volumes:
-      - kafkadata:/var/lib/kafka/data                         # Kafka数据持久化
-      - ./compose/kafka/server.properties:/opt/kafka/config/server.properties  # 配置文件挂载
+      - kafkadata:/var/lib/kafka/data
+      - ./compose/kafka/config:/opt/kafka/config
     ports:
       - "9092:9092"                                           # Kafka客户端连接端口
     environment:
