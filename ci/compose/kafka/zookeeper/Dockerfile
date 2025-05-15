@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/wurstmeister/zookeeper:latest
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/zookeeper:latest
 
 # 设置工作目录
 WORKDIR /opt/zookeeper

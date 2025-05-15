@@ -1,4 +1,4 @@
-FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/wurstmeister/kafka:2.13-2.8.1
+FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/kafka:2.13-2.8.1
 
 # 设置工作目录
 WORKDIR /opt/kafka
