@@ -5,7 +5,6 @@
 package model
 
 import (
-	"encoding/json"
 	"time"
 )
 
@@ -28,15 +27,6 @@ type ReviewReplyInfo struct {
 	VideoInfo string    `gorm:"column:video_info;not null;comment:媒体信息：视频" json:"video_info"`                      // 媒体信息：视频
 	ExtJSON   string    `gorm:"column:ext_json;not null;comment:信息扩展" json:"ext_json"`                             // 信息扩展
 	CtrlJSON  string    `gorm:"column:ctrl_json;not null;comment:控制扩展" json:"ctrl_json"`                           // 控制扩展
-}
-
-func (c *ReviewReplyInfo) ExtJSONMap() map[string]interface{} {
-	data := make(map[string]interface{})
-	err := json.Unmarshal([]byte(c.ExtJSON), &data)
-	if err != nil {
-		return nil
-	}
-	return data
 }
 
 // TableName ReviewReplyInfo's table name

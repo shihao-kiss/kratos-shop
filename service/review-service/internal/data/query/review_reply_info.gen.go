@@ -7,7 +7,6 @@ package query
 import (
 	"context"
 	"database/sql"
-	"strings"
 
 	"gorm.io/gorm"
 	"gorm.io/gorm/clause"
@@ -18,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"review-service/dal/model"
+	"review-service/internal/data/model"
 )
 
 func newReviewReplyInfo(db *gorm.DB, opts ...gen.DOOption) reviewReplyInfo {
@@ -220,23 +219,6 @@ type IReviewReplyInfoDo interface {
 	Returning(value interface{}, columns ...string) IReviewReplyInfoDo
 	UnderlyingDB() *gorm.DB
 	schema.Tabler
-
-	GetByVersion(version int) (result []*model.ReviewReplyInfo, err error)
-}
-
-// SELECT * FROM @@table WHERE version=@version
-func (r reviewReplyInfoDo) GetByVersion(version int) (result []*model.ReviewReplyInfo, err error) {
-	var params []interface{}
-
-	var generateSQL strings.Builder
-	params = append(params, version)
-	generateSQL.WriteString("SELECT * FROM review_reply_info WHERE version=? ")
-
-	var executeSQL *gorm.DB
-	executeSQL = r.UnderlyingDB().Raw(generateSQL.String(), params...).Find(&result) // ignore_security_alert
-	err = executeSQL.Error
-
-	return
 }
 
 func (r reviewReplyInfoDo) Debug() IReviewReplyInfoDo {

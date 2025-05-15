@@ -17,7 +17,7 @@ import (
 
 	"gorm.io/plugin/dbresolver"
 
-	"review-service/dal/model"
+	"review-service/internal/data/model"
 )
 
 func newReviewAppealInfo(db *gorm.DB, opts ...gen.DOOption) reviewAppealInfo {

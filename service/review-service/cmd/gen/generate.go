@@ -3,11 +3,9 @@ package main
 // gorm gen configure
 
 import (
-	"context"
+	"errors"
 	"fmt"
 
-	"review-service/dal/model"
-	"review-service/dal/query"
 	"review-service/internal/conf"
 
 	"github.com/go-kratos/kratos/v2/config"
@@ -40,7 +38,10 @@ func configData() *conf.Data {
 }
 
 // NewDB 创建数据库连接
-func NewDB(c *conf.Data) *gorm.DB {
+func connectDB(c *conf.Data) *gorm.DB {
+	if c == nil {
+		panic(errors.New("GEN: connectDB fail, need cfg"))
+	}
 	fmt.Printf("c.Database.Driver: %+v\n", c.Database.Driver)
 	switch c.Database.Driver {
 	case "mysql":
@@ -62,13 +63,14 @@ func autoSync(db *gorm.DB) {
 		// 默认会在 OutPath 目录生成CRUD代码，并且同目录下生成 model 包
 		// 所以OutPath最终package不能设置为model，在有数据库表同步的情况下会产生冲突
 		// 若一定要使用可以通过ModelPkgPath单独指定model package的名称
-		OutPath: "../../dal/query",
+		OutPath: "../../internal/data/query",
 		/* ModelPkgPath: "dal/model"*/
 
 		// gen.WithoutContext：禁用WithContext模式
 		// gen.WithDefaultQuery：生成一个全局Query对象Q
 		// gen.WithQueryInterface：生成Query接口
-		Mode: gen.WithDefaultQuery | gen.WithQueryInterface,
+		Mode:          gen.WithDefaultQuery | gen.WithQueryInterface,
+		FieldNullable: true,
 	})
 
 	// 通常复用项目中已有的SQL连接配置db(*gorm.DB)
@@ -80,22 +82,22 @@ func autoSync(db *gorm.DB) {
 	g.ApplyBasic(g.GenerateAllTable()...)
 
 	// 通过ApplyInterface添加为表添加自定义方法
-	g.ApplyInterface(func(model.Querier) {}, g.GenerateModel("review_reply_info"))
-	g.GenerateModel("review_reply_info", gen.WithMethod(model.CommonModel{}))
+	// g.ApplyInterface(func(model.Querier) {}, g.GenerateModel("review_reply_info"))
+	// g.GenerateModel("review_reply_info", gen.WithMethod(model.CommonModel{}))
 
 	// 执行并生成代码
 	g.Execute()
 }
 
 func operateDB(db *gorm.DB) {
-	query.SetDefault(db)
+	// query.SetDefault(db)
 
-	operateReviewReplyInfo := query.ReviewReplyInfo
-	ret, err := operateReviewReplyInfo.WithContext(context.Background()).Where(operateReviewReplyInfo.ID.Eq(1)).First()
-	if err != nil {
-		fmt.Printf("err: %+v\n", err)
-	}
-	fmt.Printf("reviewReplyInfo: %+v\n", ret.ExtJSONMap())
+	// operateReviewReplyInfo := query.ReviewReplyInfo
+	// ret, err := operateReviewReplyInfo.WithContext(context.Background()).Where(operateReviewReplyInfo.ID.Eq(1)).First()
+	// if err != nil {
+	// 	fmt.Printf("err: %+v\n", err)
+	// }
+	// fmt.Printf("reviewReplyInfo: %+v\n", ret.ExtJSONMap())
 
 	// 通过自定义方法查询
 	// ret2, err := operateReviewReplyInfo.WithContext(context.Background()).GetByVersion(0)
@@ -109,7 +111,7 @@ func operateDB(db *gorm.DB) {
 
 func main() {
 	conf := configData()
-	db := NewDB(conf)
+	db := connectDB(conf)
 	autoSync(db)
 	operateDB(db)
 }

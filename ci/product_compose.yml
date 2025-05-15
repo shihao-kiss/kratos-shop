@@ -8,6 +8,8 @@ volumes:                                                       # 定义持久化
   etcddata:                                                    # 添加etcd数据卷
   natsdata:                                                     # 添加 NATS 数据卷
   consuldata:                                                   # 添加 Consul 数据卷
+  kafkadata:                                                   # 添加 Kafka 数据卷
+  zookeeperdata:                                               # 添加 Zookeeper 数据卷
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -99,3 +101,38 @@ services:                                                      # 定义服务列
     cap_add:
       - NET_ADMIN                                             # 允许网络管理权限
       - SYS_TIME                                              # 允许时间同步
+
+  codekafka:                                                   # Kafka 服务配置
+    build:
+      context: .
+      dockerfile: compose/kafka/Dockerfile
+    image: kratos_kafka
+    container_name: kratos_kafka
+    restart: always
+    volumes:
+      - kafkadata:/var/lib/kafka/data                         # Kafka数据持久化
+      - ./compose/kafka/server.properties:/opt/kafka/config/server.properties:ro  # 配置文件挂载
+    ports:
+      - "9092:9092"                                           # Kafka客户端连接端口
+    environment:
+      - KAFKA_BROKER_ID=1
+      - KAFKA_ZOOKEEPER_CONNECT=codezookeeper:2181
+      - KAFKA_ADVERTISED_LISTENERS=PLAINTEXT://codekafka:9092
+      - KAFKA_LISTENERS=PLAINTEXT://0.0.0.0:9092
+    depends_on:
+      - codezookeeper
+
+  codezookeeper:                                              # Zookeeper 服务配置
+    build:
+      context: .
+      dockerfile: compose/kafka/zookeeper/Dockerfile
+    image: kratos_zookeeper
+    container_name: kratos_zookeeper
+    restart: always
+    volumes:
+      - zookeeperdata:/var/lib/zookeeper/data                 # Zookeeper数据持久化
+      - ./compose/kafka/zookeeper/zoo.cfg:/conf/zoo.cfg:ro    # 配置文件挂载
+    ports:
+      - "2181:2181"                                           # Zookeeper客户端连接端口
+    environment:
+      - ZOO_MY_ID=1
