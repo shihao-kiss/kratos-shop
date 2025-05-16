@@ -4,6 +4,9 @@ FROM registry.cn-hangzhou.aliyuncs.com/shihao-images/kafka:3.5
 # 设置工作目录
 WORKDIR /opt/kafka
 
+# 复制自定义配置文件
+COPY ./compose/kafka/server.properties /opt/kafka/config/server.properties
+
 # 设置环境变量
 ENV KAFKA_HEAP_OPTS="-Xmx1G -Xms1G"
 

@@ -142,3 +142,4 @@ services:                                                      # 定义服务列
       - "9092:9092"
     volumes:
       - kafkadata:/bitnami/kafka
+      - ./compose/kafka/server.properties:/opt/kafka/config/server.properties
