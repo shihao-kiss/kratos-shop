@@ -103,23 +103,19 @@ services:                                                      # 定义服务列
       - SYS_TIME                                              # 允许时间同步
 
   codezookeeper:
-    image: bitnami/zookeeper:3.8
+    image: registry.cn-hangzhou.aliyuncs.com/shihao-images/zookeeper:3.8
     container_name: kratos_zookeeper
     restart: always
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
       - ZOO_LOG_LEVEL=DEBUG
-      - JVMFLAGS=-Xmx512m -Xms512m
     ports:
       - "2181:2181"
     volumes:
       - zookeeperdata:/bitnami/zookeeper
 
   codekafka:
-    build:
-      context: .
-      dockerfile: compose/kafka/Dockerfile
-    image: kratos_kafka
+    image: registry.cn-hangzhou.aliyuncs.com/shihao-images/kafka:3.5
     container_name: kratos_kafka
     restart: always
     environment:
@@ -135,6 +131,7 @@ services:                                                      # 定义服务列
       - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=1
       - KAFKA_CFG_MIN_INSYNC_REPLICAS=1
       - KAFKA_CFG_AUTO_LEADER_REBALANCE_ENABLE=true
+      - KAFKA_HEAP_OPTS=-Xmx1G -Xms1G  # 直接用环境变量设置堆内存
     depends_on:
       - codezookeeper
     ports:
