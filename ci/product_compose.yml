@@ -103,10 +103,7 @@ services:                                                      # 定义服务列
       - SYS_TIME                                              # 允许时间同步
 
   codezookeeper:
-    build:
-      context: .
-      dockerfile: compose/kafka/zookeeper/Dockerfile
-    image: kratos_zookeeper
+    image: bitnami/zookeeper:3.8
     container_name: kratos_zookeeper
     restart: always
     environment:
@@ -142,4 +139,3 @@ services:                                                      # 定义服务列
       - "9092:9092"
     volumes:
       - kafkadata:/bitnami/kafka
-      - ./compose/kafka/server.properties:/opt/kafka/config/server.properties

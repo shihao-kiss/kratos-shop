@@ -8,4 +8,4 @@ WORKDIR /opt/zookeeper
 EXPOSE 2181
 
 # 启动命令
-CMD ["/opt/zookeeper-3.4.13/bin/zkServer.sh", "start-foreground"] 
+CMD ["/opt/bitnami/zookeeper/bin/zkServer.sh", "start-foreground"] 
