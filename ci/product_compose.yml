@@ -156,17 +156,14 @@ services:                                                      # 定义服务列
     volumes:
       - kafkadata:/bitnami/kafka
 
-  codekafka-manager:
-    image: registry.cn-hangzhou.aliyuncs.com/shihao-images/kafka-manager:1.3.1.8
+  codekafka-ui:
+    image: provectuslabs/kafka-ui:latest
+    container_name: kratos_kafka_ui
     restart: always
-    container_name: codekafka-manager
-    environment:
-      ZK_HOSTS: zookeeper_sasl:2181
-      KAFKA_MANAGER_AUTH_ENABLED: "true"
-      KAFKA_MANAGER_USERNAME: admin
-      KAFKA_MANAGER_PASSWORD: Eisoo.com123
     ports:
-      - 9999:9000
-    volumes:
-      - ./conf/application.conf:/kafka-manager-1.3.1.8/conf/application.conf
-    command: -Dpidfile.path=/dev/null
+      - "9999:8080"
+    environment:
+      - KAFKA_CLUSTERS_0_NAME=kratos-kafka
+      - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=codekafka:9092
+    depends_on:
+      - codekafka
