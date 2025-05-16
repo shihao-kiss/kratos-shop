@@ -108,6 +108,7 @@ services:                                                      # 定义服务列
     restart: always
     environment:
       - ALLOW_ANONYMOUS_LOGIN=yes
+      - JVMFLAGS=-Xmx512m -Xms512m
     ports:
       - "2181:2181"
     volumes:
