@@ -152,7 +152,7 @@ services:                                                      # 定义服务列
     volumes:
       - redisdata:/data
 
-  grafana:
+  codegrafana:
     image: grafana/grafana:10.4.2
     container_name: kratos_grafana
     restart: always
