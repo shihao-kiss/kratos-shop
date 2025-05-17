@@ -12,6 +12,7 @@ volumes:                                                       # 定义持久化
   zookeeperdata:                                               # 添加 Zookeeper 数据卷
   kafkamanagerdata:                                            # 添加 kafkamanagerdata 数据卷
   redisdata:                                                   # 添加 redis 数据卷
+  grafanadata:
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -150,3 +151,12 @@ services:                                                      # 定义服务列
       - "6379:6379"
     volumes:
       - redisdata:/data
+
+  grafana:
+    image: grafana/grafana:10.4.2
+    container_name: kratos_grafana
+    restart: always
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafanadata:/var/lib/grafana
