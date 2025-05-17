@@ -11,6 +11,7 @@ volumes:                                                       # 定义持久化
   kafkadata:                                                   # 添加 Kafka 数据卷
   zookeeperdata:                                               # 添加 Zookeeper 数据卷
   kafkamanagerdata:                                            # 添加 kafkamanagerdata 数据卷
+  redisdata:                                                   # 添加 redis 数据卷
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -136,3 +137,14 @@ services:                                                      # 定义服务列
       - "9999:8080"
     depends_on:
       - codekafka
+
+  coderedis:
+    build:
+      context: .
+      dockerfile: compose/redis/Dockerfile
+    container_name: kratos_redis
+    restart: always
+    ports:
+      - "6379:6379"
+    volumes:
+      - redisdata:/data
