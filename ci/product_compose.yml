@@ -144,7 +144,8 @@ services:                                                      # 定义服务列
       dockerfile: compose/redis/Dockerfile
     container_name: kratos_redis
     restart: always
-    user: "0:0"           # 以 root 用户运行，解决权限问题
+    user: "0:0"
+    privileged: true
     ports:
       - "6379:6379"
     volumes:
