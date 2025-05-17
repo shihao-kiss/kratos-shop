@@ -186,6 +186,6 @@ services:                                                      # 定义服务列
       - "14250:14250"
       # Query/UI port
       - "16686:16686"
-    # volumes:
+    volumes:
       # 如果需要持久化数据，可以挂载数据卷
       - jaegerdata:/badger
