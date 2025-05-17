@@ -104,7 +104,9 @@ services:                                                      # 定义服务列
       - SYS_TIME                                              # 允许时间同步
 
   codekafka:
-    image: bitnami/kafka:3.6.2
+    build:
+      context: .
+      dockerfile: compose/kafka/Dockerfile
     container_name: kratos_kafka
     restart: always
     security_opt:
@@ -118,38 +120,6 @@ services:                                                      # 定义服务列
       nproc:
         soft: 4096
         hard: 4096
-    environment:
-      - TZ=Asia/Shanghai
-      # 降低内存使用
-      - KAFKA_HEAP_OPTS=-Xmx512m -Xms256m
-      # KRaft 模式配置
-      - KAFKA_CFG_NODE_ID=0
-      - KAFKA_CFG_PROCESS_ROLES=controller,broker
-      - KAFKA_CFG_CONTROLLER_QUORUM_VOTERS=0@kratos_kafka:9093
-      - KAFKA_KRAFT_CLUSTER_ID=fMCL8kv1SWm87L_Md-I2hg
-      - KAFKA_CFG_METADATA_LOG_DIR=/bitnami/kafka/kraft-combined-logs
-      - KAFKA_CFG_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,PLAINTEXT:PLAINTEXT,EXTERNAL:PLAINTEXT
-      - KAFKA_CFG_CONTROLLER_LISTENER_NAMES=CONTROLLER
-      # 监听器配置
-      - KAFKA_CFG_LISTENERS=PLAINTEXT://:9092,CONTROLLER://:9093,EXTERNAL://:9094
-      - KAFKA_CFG_ADVERTISED_LISTENERS=PLAINTEXT://codekafka:9092,EXTERNAL://codekafka:9094
-      - KAFKA_CFG_INTER_BROKER_LISTENER_NAME=PLAINTEXT
-      - ALLOW_PLAINTEXT_LISTENER=yes
-      # 其他配置
-      - KAFKA_CFG_AUTO_CREATE_TOPICS_ENABLE=true
-      - KAFKA_CFG_DELETE_TOPIC_ENABLE=true
-      - KAFKA_CFG_LOG_RETENTION_HOURS=168
-      - KAFKA_CFG_NUM_PARTITIONS=3
-      - KAFKA_CFG_DEFAULT_REPLICATION_FACTOR=1
-      - KAFKA_CFG_MIN_INSYNC_REPLICAS=1
-      - KAFKA_CFG_AUTO_LEADER_REBALANCE_ENABLE=true
-      - KAFKA_LOG4J_LOGGERS=kafka.controller=INFO,kafka.producer.async.DefaultEventHandler=INFO,state.change.logger=INFO
-      - KAFKA_LOG4J_ROOT_LOGLEVEL=WARN
-      - KAFKA_CFG_NUM_NETWORK_THREADS=3
-      - KAFKA_CFG_NUM_IO_THREADS=8
-      - KAFKA_CFG_SOCKET_SEND_BUFFER_BYTES=102400
-      - KAFKA_CFG_SOCKET_RECEIVE_BUFFER_BYTES=102400
-      - KAFKA_CFG_SOCKET_REQUEST_MAX_BYTES=104857600
     ports:
       - "9092:9092"
       - "9094:9094"
@@ -157,7 +127,9 @@ services:                                                      # 定义服务列
       - kafkadata:/bitnami/kafka
 
   codekafka-ui:
-    image: provectuslabs/kafka-ui:latest
+    build:
+      context: .
+      dockerfile: compose/kafka-ui/Dockerfile
     container_name: kratos_kafka_ui
     restart: always
     ports:
