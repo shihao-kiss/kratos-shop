@@ -14,6 +14,7 @@ volumes:                                                       # 定义持久化
   redisdata:                                                   # 添加 redis 数据卷
   grafanadata:                                                 # 添加 grafana 数据卷
   prometheusdata:                                               # 添加 prometheus 数据卷
+  jaegerdata:                                                   # 添加 jaeger 数据卷
 
 services:                                                      # 定义服务列表
   codemysql:                                                   # MySQL服务配置
@@ -171,3 +172,20 @@ services:                                                      # 定义服务列
     volumes:
       - prometheusdata:/prometheus
       - ./compose/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml
+
+  codejaeger:
+    image: registry.cn-hangzhou.aliyuncs.com/shihao-images/all-in-one:1.54
+    container_name: kratos_jaeger
+    restart: always
+    ports:
+      # Agent ports
+      - "6831:6831/udp"
+      - "6832:6832/udp"
+      # Collector ports
+      - "14268:14268"
+      - "14250:14250"
+      # Query/UI port
+      - "16686:16686"
+    # volumes:
+      # 如果需要持久化数据，可以挂载数据卷
+      - jaegerdata:/badger
