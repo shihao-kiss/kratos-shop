@@ -4,23 +4,37 @@ import (
 	"context"
 
 	pb "review-service/api/review/v1"
-
 	"review-service/internal/biz"
 	"review-service/internal/data/model"
+
+	"github.com/go-kratos/kratos/v2/log"
 )
 
 type ReviewService struct {
 	pb.UnimplementedReviewServer
 
-	uc *biz.ReviewUsecase
+	uc  *biz.ReviewUsecase
+	log *log.Helper
 }
 
-func NewReviewService(uc *biz.ReviewUsecase) *ReviewService {
-	return &ReviewService{uc: uc}
+func NewReviewService(uc *biz.ReviewUsecase, logger log.Logger) *ReviewService {
+	return &ReviewService{uc: uc, log: log.NewHelper(logger)}
 }
 
 func (s *ReviewService) CreateReview(ctx context.Context, req *pb.CreateReviewRequest) (*pb.CreateReviewReply, error) {
-	resp, err := s.uc.CreateReview(ctx, &model.ReviewInfo{})
+	s.log.Infof("CreateReview: %+v", req)
+	resp, err := s.uc.CreateReview(ctx, &model.ReviewInfo{
+		UserID:       req.UserId,
+		OrderID:      req.OrderId,
+		Score:        req.Score,
+		ServiceScore: req.ServiceScore,
+		ExpressScore: req.ExpressScore,
+		Content:      req.Content,
+		PicInfo:      req.PicInfo,
+		VideoInfo:    req.VideoInfo,
+		Anonymous:    req.Anonymous,
+		Status:       0,
+	})
 	if err != nil {
 		return nil, err
 	}

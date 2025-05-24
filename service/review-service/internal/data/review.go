@@ -2,6 +2,7 @@ package data
 
 import (
 	"context"
+
 	"review-service/internal/biz"
 	"review-service/internal/data/model"
 
@@ -16,7 +17,7 @@ type reviewRepo struct {
 func NewReviewRepo(data *Data, logger log.Logger) biz.ReviewRepo {
 	return &reviewRepo{
 		data: data,
-		log: log.NewHelper(logger),
+		log:  log.NewHelper(logger),
 	}
 }
 
@@ -28,4 +29,12 @@ func (r *reviewRepo) SaveReview(ctx context.Context, review *model.ReviewInfo) (
 		return nil, err
 	}
 	return review, err
+}
+
+func (r *reviewRepo) GetReviewByID(ctx context.Context, orderID int64) ([]*model.ReviewInfo, error) {
+	r.log.Infof("GetReviewByID req %+v", orderID)
+	reviews, err := r.data.query.ReviewInfo.
+		WithContext(ctx).
+		Where(r.data.query.ReviewInfo.OrderID.Eq(orderID)).Find()
+	return reviews, err
 }

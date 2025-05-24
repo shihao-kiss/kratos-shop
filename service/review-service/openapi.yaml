@@ -46,11 +46,14 @@ components:
                 orderId:
                     type: string
                 score:
-                    type: string
+                    type: integer
+                    format: int32
                 serviceScore:
-                    type: string
+                    type: integer
+                    format: int32
                 expressScore:
-                    type: string
+                    type: integer
+                    format: int32
                 content:
                     type: string
                 picInfo:
@@ -58,7 +61,8 @@ components:
                 videoInfo:
                     type: string
                 anonymous:
-                    type: string
+                    type: integer
+                    format: int32
             description: 创建评价请求
         GoogleProtobufAny:
             type: object
