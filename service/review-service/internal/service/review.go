@@ -26,6 +26,7 @@ func (s *ReviewService) CreateReview(ctx context.Context, req *pb.CreateReviewRe
 	resp, err := s.uc.CreateReview(ctx, &model.ReviewInfo{
 		UserID:       req.UserId,
 		OrderID:      req.OrderId,
+		StoreID:      req.StoreId,
 		Score:        req.Score,
 		ServiceScore: req.ServiceScore,
 		ExpressScore: req.ExpressScore,
@@ -57,4 +58,14 @@ func (s *ReviewService) GetReview(ctx context.Context, req *pb.GetReviewRequest)
 
 func (s *ReviewService) ListReview(ctx context.Context, req *pb.ListReviewRequest) (*pb.ListReviewReply, error) {
 	return &pb.ListReviewReply{}, nil
+}
+
+func (s *ReviewService) ReplyReview(ctx context.Context, req *pb.ReplyReviewRequest) (*pb.ReplyReviewResp, error) {
+	s.log.Infof("ReplyReview function called: %+v", req)
+	id, err := s.uc.ReplyReview(ctx, req)
+	if err != nil {
+		return nil, err
+	}
+	s.log.Infof("ReplyReview success: %+v", id)
+	return &pb.ReplyReviewResp{Id: id}, nil
 }
