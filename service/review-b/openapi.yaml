@@ -1,0 +1,50 @@
+# Generated with protoc-gen-openapi
+# https://github.com/google/gnostic/tree/master/cmd/protoc-gen-openapi
+
+openapi: 3.0.3
+info:
+    title: Business API
+    version: 0.0.1
+paths:
+    business/v1/review/reply:
+        post:
+            tags:
+                - Business
+            operationId: Business_ReplyReview
+            requestBody:
+                content:
+                    application/json:
+                        schema:
+                            $ref: '#/components/schemas/api.business.v1.ReplyReviewRequest'
+                required: true
+            responses:
+                "200":
+                    description: OK
+                    content:
+                        application/json:
+                            schema:
+                                $ref: '#/components/schemas/api.business.v1.ReplyReviewReply'
+components:
+    schemas:
+        api.business.v1.ReplyReviewReply:
+            type: object
+            properties:
+                id:
+                    type: string
+            description: 评价回复响应
+        api.business.v1.ReplyReviewRequest:
+            type: object
+            properties:
+                reviewId:
+                    type: string
+                storeId:
+                    type: string
+                content:
+                    type: string
+                picInfo:
+                    type: string
+                videoInfo:
+                    type: string
+            description: 回复评价请求
+tags:
+    - name: Business

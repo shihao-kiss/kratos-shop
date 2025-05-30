@@ -1,0 +1,34 @@
+syntax = "proto3";
+
+package api.business.v1;
+
+import "google/api/annotations.proto";
+import "validate/validate.proto";
+
+option go_package = "review-b/api/business/v1;v1";
+option java_multiple_files = true;
+option java_package = "api.business.v1";
+option java_outer_classname = "BusinessProtoV1";
+
+service Business {
+    rpc ReplyReview (ReplyReviewRequest) returns (ReplyReviewReply) {
+        option (google.api.http) = {
+            post: "business/v1/review/reply",
+            body: "*"
+        };
+    }
+}
+
+// 回复评价请求
+message ReplyReviewRequest {
+    int64 reviewId = 1 [(validate.rules).int64 = {gt: 0, lt: 9223372036854775807}];
+    int64 storeId = 2 [(validate.rules).int64 = {gt: 0, lt: 9223372036854775807}];
+    string content = 3 [(validate.rules).string = {min_len: 1, max_len: 1000}];
+    string picInfo = 4 [(validate.rules).string = {min_len: 1, max_len: 1000}];
+    string videoInfo = 5 [(validate.rules).string = {min_len: 1, max_len: 1000}];
+}
+
+// 评价回复响应
+message ReplyReviewReply {
+	int64 id = 1;
+}
